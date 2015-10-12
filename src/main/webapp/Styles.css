@@ -9,8 +9,67 @@ and open the template in the editor.
 */
 
 
-nav {
+/* Navigation Style */
+nav
+{
+    font-family: fantasy;
+    font-style: oblique;
+    background-color: highlight;
+    list-style-type: none;
+    overflow: hidden;
+    width: 50%;
+    padding: 5px;
+    margin: 5px;
+    border-color: solid white;
+    border-width: 5px;
+    border-style: double;
+    opacity: 0.5;
+    left: 0;
     text-align: left;
-    border: 2px;
-    float: right;
+    float: center;
+}
+
+li
+{
+    display: inline-block;
+    font: Arial;
+    opacity: 1;
+}
+
+
+a
+{
+    display: block;
+    width: 60px;
+    opacity: 1;
+}
+
+
+h1
+{
+    background-color: navy;
+    border-color: grey;
+    border-width: 10px;
+    border-style: grove;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    color: lightgrey;
+    font-family: fantasy;
+}
+
+h2
+{
+    color: white;
+    font-family: Courier New;
+}
+
+body
+{
+    background-image: url("0hxYC6j.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-color: black;
+    color: white;
 }
