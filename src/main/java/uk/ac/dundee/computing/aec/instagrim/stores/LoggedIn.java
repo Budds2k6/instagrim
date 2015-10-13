@@ -4,36 +4,57 @@
  * and open the template in the editor.
  */
 
+// Package import
 package uk.ac.dundee.computing.aec.instagrim.stores;
 
 /**
  *
- * @author Administrator
+ * @author: Tristan Haley
+ * @template: Andy Cobley
  */
+
+// Base class for login handling
 public class LoggedIn {
-    boolean logedin=false;
-    String Username=null;
-    public void LogedIn(){
-        
+    boolean loggedIn = false;
+    String Username = null;
+    public void LoggedIn()
+    { 
+        // Constructor
     }
     
-    public void setUsername(String name){
+    // Sets the username
+    public void setUsername(String name)
+    {
         this.Username=name;
     }
-    public String getUsername(){
+    
+    // Returns the Username
+    public String getUsername()
+    {
         return Username;
     }
-    public void setLogedin(){
-        logedin=true;
-    }
-    public void setLogedout(){
-        logedin=false;
+    
+    // Sets the status to logged in
+    public void setLoggedIn()
+    {
+        loggedIn = true;
     }
     
-    public void setLoginState(boolean logedin){
-        this.logedin=logedin;
+    // Sets the status to logged out
+    public void setLoggedOut()
+    {
+        loggedIn = false;
     }
-    public boolean getlogedin(){
-        return logedin;
+    
+    // Sets the status to the parameter
+    public void setLoginState(boolean loggedIn)
+    {
+        this.loggedIn = loggedIn;
+    }
+    
+    // Returns the logged in state
+    public boolean getLoggedIn()
+    {
+        return loggedIn;
     }
 }

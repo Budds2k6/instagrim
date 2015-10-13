@@ -18,10 +18,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
-import org.apache.commons.fileupload.FileItemIterator;
-import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.fileupload.util.Streams;
+//import org.apache.commons.fileupload.FileItemIterator;
+//import org.apache.commons.fileupload.FileItemStream;
+//import org.apache.commons.fileupload.servlet.ServletFileUpload;
+//import org.apache.commons.fileupload.util.Streams;
 import uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts;
 import uk.ac.dundee.computing.aec.instagrim.lib.Convertors;
 import uk.ac.dundee.computing.aec.instagrim.models.PicModel;
@@ -46,8 +46,6 @@ public class Image extends HttpServlet {
     private Cluster cluster;
     private HashMap CommandsMap = new HashMap();
     
-    
-
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -137,7 +135,7 @@ public class Image extends HttpServlet {
             HttpSession session=request.getSession();
             LoggedIn lg= (LoggedIn)session.getAttribute("LoggedIn");
             String username="majed";
-            if (lg.getlogedin()){
+            if (lg.getLoggedIn()){
                 username=lg.getUsername();
             }
             if (i > 0) {
