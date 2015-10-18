@@ -10,39 +10,47 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Instagrim - Home</title>
+        <title>InstaGrim - Home</title>
         <link rel="stylesheet" type="text/css" href="Styles.css" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
         <header>
-                <h1  style="position: absolute; left: 0; top:-15px " >InstaGrim</h1>
-            
-            <h2>Home</h2>
-            <p>Please choose an option:</p>
+            <h1> InstaGrim </h1>
+            <h2>Welcome</h2>
         </header>
         <nav>        
             <ul>               
-                <li><a href="upload.jsp">Upload</a></li>
                     <%  
-                        // Checks if logged in
-                        LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
-                        if (lg != null)
-                        {
-                            String UserName = lg.getUsername();
-                            if (lg.getLoggedIn())
-                            {
-                                %>
-                                <li><a href="/Instagrim/Images/<%=lg.getUsername()%>">Your Images</a></li>
-                                <%
-                            }
-                        }else
-                        {
-                            %>
-                                 <li><a href="register.jsp">Register</a></li>
-                                <li><a href="login.jsp">Login</a></li>
-                            <%        
-                        }%>
+                // Checks if logged in
+                LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
+
+                // If they are logged in
+                if (lg != null)
+                {
+                    // Obtain username data
+                    String UserName = lg.getUsername();
+
+                    if (lg.getLoggedIn())
+                    {
+                        %>
+                        <p style="color: black"> Welcome <%= UserName %>! </p>
+                        <li><a href="upload.jsp">Upload</a></li>
+                        <li><a href="/Instagrim/Images/<%=lg.getUsername()%>">Your Images</a></li>
+
+                        <form action="Logout" method="POST">
+                            <input type="Image" src="lkju.png">
+                        </form>
+
+                        <%
+                    }
+                }else
+                {
+                    %>
+                         <li><a href="register.jsp">Register</a></li>
+                        <li><a href="login.jsp">Login</a></li>
+                    <%        
+                }%>
             </ul>
             
         </nav>

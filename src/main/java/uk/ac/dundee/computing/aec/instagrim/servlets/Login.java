@@ -56,6 +56,7 @@ public class Login extends HttpServlet {
         boolean isValid=us.IsValidUser(username, password);
         HttpSession session=request.getSession();
         System.out.println("Session in servlet "+session);
+        
         if (isValid){
             LoggedIn lg= new LoggedIn();
             lg.setLoggedIn();
@@ -64,13 +65,12 @@ public class Login extends HttpServlet {
             
             session.setAttribute("LoggedIn", lg);
             System.out.println("Session in servlet "+session);
-            RequestDispatcher rd=request.getRequestDispatcher("index.jsp");
+            RequestDispatcher rd=request.getRequestDispatcher("Profile.jsp");
 	    rd.forward(request,response);
             
         }else{
             response.sendRedirect("/Instagrim/login.jsp");
         }
-        
     }
 
     /**

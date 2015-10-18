@@ -92,6 +92,7 @@ public class Image extends HttpServlet {
         }
     }
 
+    // Gets the list of images for the user, and displays them via UserPics page
     private void DisplayImageList(String User, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PicModel tm = new PicModel();
         tm.setCluster(cluster);
@@ -158,7 +159,7 @@ public class Image extends HttpServlet {
 
         PrintWriter out = null;
         out = new PrintWriter(response.getOutputStream());
-        out.println("<h1>You have a na error in your input</h1>");
+        out.println("<h1>You have an na error in your input</h1>");
         out.println("<h2>" + mess + "</h2>");
         out.close();
         return;

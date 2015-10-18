@@ -16,9 +16,9 @@ nav
     font-style: oblique;
     background-color: highlight; 
     overflow: hidden;
-    width: 8%;
-    padding: 5px;
-    margin: 5px;
+    width: 6%;
+    padding: 2px;
+    margin: 2px;
     border-color: solid white;
     border-width: 5px;
     border-style: double;
@@ -27,24 +27,34 @@ nav
     float: center;
 }
 
+/* List Style */
 li
 {
-    width: 5%;
+    padding-top: 10px;
     font: Arial;
     opacity: 1;
     float: center;
     list-style-type: none;
 }
 
+/* Unordered-List Style */
+ul
+{
+    margin: 0px;
+    padding: 10px;
+}
 
+/* Hyperlink Style */
 a
 {
+    padding: 0px;
     display: block;
     width: 60px;
     opacity: 1;
 }
 
 
+/* Header 1 Style */
 h1
 {
     background: linear-gradient(to right, black, grey, black);
@@ -61,12 +71,14 @@ h1
     text-shadow: 2px 2px 5px white;
 }
 
+/* Header 2 Style */
 h2
 {
     color: white;
     font-family: Courier New;
 }
 
+/* Body Style */
 body
 {
     background-image: url("0hxYC6j.jpg");

@@ -21,12 +21,14 @@ import uk.ac.dundee.computing.aec.instagrim.models.User;
 
 /**
  *
- * @author Administrator
+ * @author Tristan Haley
  */
 @WebServlet(name = "Register", urlPatterns = {"/Register"})
-public class Register extends HttpServlet {
+public class Register extends HttpServlet
+{
     Cluster cluster=null;
-    public void init(ServletConfig config) throws ServletException {
+    public void init(ServletConfig config) throws ServletException
+    {
         // TODO Auto-generated method stub
         cluster = CassandraHosts.getCluster();
     }
@@ -44,16 +46,40 @@ public class Register extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException
+    {
+        // Acquires the user details from form
         String username=request.getParameter("username");
         String password=request.getParameter("password");
+        String email=request.getParameter("email");
         
+        // Creates a new user with the details
         User us=new User();
         us.setCluster(cluster);
-        us.RegisterUser(username, password);
+        us.RegisterUser(username, password, email);
         
+        // Directs the user to the index page
 	response.sendRedirect("/Instagrim");
         
+    }
+    
+    protected boolean validationCheck(String username, String password, String email)
+    {
+        if (username != null)
+        {
+            // Username validation
+             if (username.length() < 8)
+             {
+                 return false;
+             }
+
+             // Email validation
+             if (!email.contains("@"))
+             {
+                 return false;
+             }
+        }
+        return true;
     }
 
     /**
@@ -62,7 +88,8 @@ public class Register extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-    public String getServletInfo() {
+    public String getServletInfo()
+    {
         return "Short description";
     }// </editor-fold>
 

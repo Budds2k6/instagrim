@@ -21,21 +21,29 @@ import uk.ac.dundee.computing.aec.instagrim.stores.Pic;
  *
  * @author Administrator
  */
-public class User {
+public class User
+{
     Cluster cluster;
-    public User(){
-        
+    public User()
+    {
+        // Constructor
     }
     
-    public boolean RegisterUser(String username, String Password){
+    // Registers a new user
+    public boolean RegisterUser(String username, String Password, String email)
+    {
         AeSimpleSHA1 sha1handler=  new AeSimpleSHA1();
         String EncodedPassword=null;
-        try {
+        try
+        {
             EncodedPassword= sha1handler.SHA1(Password);
-        }catch (UnsupportedEncodingException | NoSuchAlgorithmException et){
+        }
+        catch (UnsupportedEncodingException | NoSuchAlgorithmException et)
+        {
             System.out.println("Can't check your password");
             return false;
         }
+        
         Session session = cluster.connect("instagrim");
         PreparedStatement ps = session.prepare("insert into userprofiles (login,password) Values(?,?)");
        
@@ -48,15 +56,26 @@ public class User {
         return true;
     }
     
-    public boolean IsValidUser(String username, String Password){
+    // Checks if the user is valid
+    public boolean IsValidUser(String username, String Password)
+    {
+        // Secure hash
         AeSimpleSHA1 sha1handler=  new AeSimpleSHA1();
         String EncodedPassword=null;
-        try {
+        
+        // Attempt to password check
+        try 
+        {
             EncodedPassword= sha1handler.SHA1(Password);
-        }catch (UnsupportedEncodingException | NoSuchAlgorithmException et){
+        }
+        catch (UnsupportedEncodingException | NoSuchAlgorithmException et)
+        {
             System.out.println("Can't check your password");
             return false;
         }
+        
+        
+        // Cassandra query
         Session session = cluster.connect("instagrim");
         PreparedStatement ps = session.prepare("select password from userprofiles where login =?");
         ResultSet rs = null;
@@ -64,24 +83,29 @@ public class User {
         rs = session.execute( // this is where the query is executed
                 boundStatement.bind( // here you are binding the 'boundStatement'
                         username));
-        if (rs.isExhausted()) {
+        
+        // Checks for images
+        if (rs.isExhausted())
+        {
             System.out.println("No Images returned");
             return false;
-        } else {
-            for (Row row : rs) {
+        }
+        else
+        {
+            for (Row row : rs)
+            {
                
                 String StoredPass = row.getString("password");
                 if (StoredPass.compareTo(EncodedPassword) == 0)
-                    return true;
+                { return true; }
             }
         }
-   
-    
     return false;  
     }
-       public void setCluster(Cluster cluster) {
+       public void setCluster(Cluster cluster)
+       {
         this.cluster = cluster;
-    }
+       }
 
     
 }
