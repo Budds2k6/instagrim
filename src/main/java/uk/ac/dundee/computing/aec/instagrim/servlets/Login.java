@@ -26,12 +26,12 @@ import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
  * @author Administrator
  */
 @WebServlet(name = "Login", urlPatterns = {"/Login"})
-public class Login extends HttpServlet {
+public class Login extends HttpServlet
+{
+    Cluster cluster = null;
 
-    Cluster cluster=null;
-
-
-    public void init(ServletConfig config) throws ServletException {
+    public void init(ServletConfig config) throws ServletException
+    {
         // TODO Auto-generated method stub
         cluster = CassandraHosts.getCluster();
     }
@@ -46,29 +46,45 @@ public class Login extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException
+    {
+        // Obtains username + password from Cassandra
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String firstname = request.getParameter("firstname");
+        String surname = request.getParameter("surname");
+        String email = request.getParameter("email");
         
-        String username=request.getParameter("username");
-        String password=request.getParameter("password");
-        
-        User us=new User();
+        // Creates a new user, and requests session information
+        User us = new User();
         us.setCluster(cluster);
-        boolean isValid=us.IsValidUser(username, password);
-        HttpSession session=request.getSession();
-        System.out.println("Session in servlet "+session);
+        boolean isValid = us.IsValidUser(username, password);
+        HttpSession session = request.getSession();
         
-        if (isValid){
-            LoggedIn lg= new LoggedIn();
-            lg.setLoggedIn();
+        System.out.println("Session in servlet " + session);
+        
+        // If login is valid
+        if (isValid)
+        {
+            // Updates login instance
+            LoggedIn lg = new LoggedIn();
+            lg.setLoginState(true);
             lg.setUsername(username);
+            lg.setFirstname(firstname);
+            lg.setSurname(surname);
+            lg.setEmail(email);
             //request.setAttribute("LoggedIn", lg);
             
+            // Saves login instance to session
             session.setAttribute("LoggedIn", lg);
-            System.out.println("Session in servlet "+session);
-            RequestDispatcher rd=request.getRequestDispatcher("Profile.jsp");
-	    rd.forward(request,response);
+            System.out.println("Session in servlet " + session);
             
-        }else{
+            // Directs to profile page
+            RequestDispatcher rd = request.getRequestDispatcher("Profile.jsp");
+	    rd.forward(request, response);
+        }
+        else
+        {
             response.sendRedirect("/Instagrim/login.jsp");
         }
     }
@@ -79,7 +95,8 @@ public class Login extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-    public String getServletInfo() {
+    public String getServletInfo()
+    {
         return "Short description";
     }// </editor-fold>
 

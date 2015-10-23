@@ -30,13 +30,15 @@ public class User
     }
     
     // Registers a new user
-    public boolean RegisterUser(String username, String Password, String email)
+    public boolean RegisterUser(String firstname, String surname, String email, String username, String password)
     {
-        AeSimpleSHA1 sha1handler=  new AeSimpleSHA1();
-        String EncodedPassword=null;
+        AeSimpleSHA1 sha1handler = new AeSimpleSHA1();
+        String EncodedPassword = null;
+        
+        // Tries to decode password
         try
         {
-            EncodedPassword= sha1handler.SHA1(Password);
+            EncodedPassword = sha1handler.SHA1(password);
         }
         catch (UnsupportedEncodingException | NoSuchAlgorithmException et)
         {
@@ -44,8 +46,9 @@ public class User
             return false;
         }
         
+        // Creates a link to cassandra, and extracts data
         Session session = cluster.connect("instagrim");
-        PreparedStatement ps = session.prepare("insert into userprofiles (login,password) Values(?,?)");
+        PreparedStatement ps = session.prepare("insert into userprofiles (login, email, first_name, last_name, password) Values(?,?,?,?,?)");
        
         BoundStatement boundStatement = new BoundStatement(ps);
         session.execute( // this is where the query is executed
@@ -57,16 +60,16 @@ public class User
     }
     
     // Checks if the user is valid
-    public boolean IsValidUser(String username, String Password)
+    public boolean IsValidUser(String username, String password)
     {
         // Secure hash
-        AeSimpleSHA1 sha1handler=  new AeSimpleSHA1();
-        String EncodedPassword=null;
+        AeSimpleSHA1 sha1handler =  new AeSimpleSHA1();
+        String EncodedPassword = null;
         
         // Attempt to password check
         try 
         {
-            EncodedPassword= sha1handler.SHA1(Password);
+            EncodedPassword= sha1handler.SHA1(password);
         }
         catch (UnsupportedEncodingException | NoSuchAlgorithmException et)
         {
@@ -102,6 +105,7 @@ public class User
         }
     return false;  
     }
+       // Updates the cluster
        public void setCluster(Cluster cluster)
        {
         this.cluster = cluster;

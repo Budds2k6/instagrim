@@ -43,10 +43,8 @@
                 
                 <%-- <li><a href="/Instagrim/Images/majed">Sample Images</a></li> --%>
                 <li><a href="/Instagrim/"> Home </a></li>
-                
             </ul>
         </nav>
-       
         <article>
             <h3>Login</h3>
             <form method="POST"  action="Login">

@@ -16,36 +16,59 @@ package uk.ac.dundee.computing.aec.instagrim.stores;
 // Base class for login handling
 public class LoggedIn {
     boolean loggedIn = false;
-    String Username = null;
+    String username = null;
+    String firstname = null;
+    String surname = null;
+    String email = null;
     public void LoggedIn()
     { 
         // Constructor
     }
     
     // Sets the username
-    public void setUsername(String name)
+    public void setUsername(String username)
     {
-        this.Username=name;
+        this.username = username;
+    }
+    
+    // Sets the Firstname
+    public void setFirstname (String firstname)
+    {
+        this.firstname = firstname;
+    }
+    
+    // Sets the Surname
+    public void setSurname (String surname)
+    {
+        this.surname = surname;
+    }
+    
+    // Sets the Email
+    public void setEmail (String email)
+    {
+        this.email = email;
     }
     
     // Returns the Username
     public String getUsername()
-    {
-        return Username;
-    }
+    { return username; }
     
-    // Sets the status to logged in
-    public void setLoggedIn()
-    {
-        loggedIn = true;
-    }
+    // Returns Firstname
+    public String getFirstname()
+    { return firstname; }
     
-    // Sets the status to logged out
-    public void setLoggedOut()
-    {
-        loggedIn = false;
-    }
+    // Returns Surname
+    public String getSurname()
+    { return surname; }
     
+    // Returns Email
+    public String getEmail()
+    { return email; }
+       
+    // Returns login status
+    public boolean getLoggedIn()
+    { return loggedIn; }
+        
     // Sets the status to the parameter
     public void setLoginState(boolean loggedIn)
     {
@@ -53,8 +76,5 @@ public class LoggedIn {
     }
     
     // Returns the logged in state
-    public boolean getLoggedIn()
-    {
-        return loggedIn;
-    }
+
 }

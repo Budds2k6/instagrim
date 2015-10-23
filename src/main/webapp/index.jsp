@@ -12,7 +12,7 @@
     <head>
         <title>InstaGrim - Home</title>
         <link rel="stylesheet" type="text/css" href="Styles.css" />
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">        
     </head>
     <body>
         <header>
@@ -21,7 +21,7 @@
         </header>
         <nav>        
             <ul>               
-                    <%  
+            <%
                 // Checks if logged in
                 LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
 
@@ -33,24 +33,25 @@
 
                     if (lg.getLoggedIn())
                     {
-                        %>
+            %>
                         <p style="color: black"> Welcome <%= UserName %>! </p>
                         <li><a href="upload.jsp">Upload</a></li>
                         <li><a href="/Instagrim/Images/<%=lg.getUsername()%>">Your Images</a></li>
 
                         <form action="Logout" method="POST">
-                            <input type="Image" src="lkju.png">
+                            <input type="Image" src="logout-button-blue-hi.png">
                         </form>
 
-                        <%
+            <%
                     }
                 }else
                 {
-                    %>
+            %>
                          <li><a href="register.jsp">Register</a></li>
                         <li><a href="login.jsp">Login</a></li>
-                    <%        
-                }%>
+            <%        
+                }
+            %>
             </ul>
             
         </nav>

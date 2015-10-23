@@ -14,17 +14,20 @@ nav
 {
     font-family: fantasy;
     font-style: oblique;
-    background-color: highlight; 
+    background-color: rgba(178, 205, 214, 0.5); 
     overflow: hidden;
-    width: 6%;
+    width: 100px;
     padding: 2px;
     margin: 2px;
-    border-color: solid white;
+    border-color: darkgrey;
     border-width: 5px;
     border-style: double;
-    opacity: 0.5;
     text-align: left;
-    float: center;
+}
+
+nav:hover
+{
+    opacity: 0.8;
 }
 
 /* List Style */

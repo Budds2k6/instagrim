@@ -11,7 +11,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Instagrim</title>
         <link rel="stylesheet" type="text/css" href="Styles.css" />
-        
         <style>
             article
             {
@@ -30,7 +29,6 @@
                 color: black;
                 text-align: left;
             }
-            
         </style>
     </head>
     <body>

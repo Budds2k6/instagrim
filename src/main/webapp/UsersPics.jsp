@@ -11,42 +11,61 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Instagrim</title>
+        <title>Instagrim - Your Gallery</title>
         <link rel="stylesheet" type="text/css" href="/Instagrim/Styles.css" />
     </head>
     <body>
         <header>
         
         <h1>InstaGrim! </h1>
-        <h2>Your world in Black and White</h2>
+        <h2>Your Gallery</h2>
         </header>
         
         <nav>
             <ul>
                 <li class="nav"><a href="/Instagrim/upload.jsp">Upload</a></li>
                 <li><a href="/Instagrim/"> Home </a></li>
-                <%-- <li><a href="/Instagrim/Images/majed">Sample Images</a></li> --%>
+                <li><a href="/Instagrim/Profile.jsp"> Profile </a></li>
             </ul>
         </nav>
  
         <article>
-            <h1>Your Pics</h1>
+            <h2>Your Pics</h2>
         <%
+            // Loads in picture list
             java.util.LinkedList<Pic> lsPics = (java.util.LinkedList<Pic>) request.getAttribute("Pics");
+            
+            // If picture list is empty
             if (lsPics == null) {
         %>
-        <p>No Pictures found</p>
+                <%-- Displays empty gallery message --%>
+                <p>Gallery Empty!</p>
         <%
-        } else {
-            Iterator<Pic> iterator;
-            iterator = lsPics.iterator();
-            while (iterator.hasNext()) {
-                Pic p = (Pic) iterator.next();
-
+            } 
+            else // If pictures in gallery
+            {
+                // Iterator for list
+                Iterator<Pic> iterator;
+                iterator = lsPics.iterator();
+                int count = 0;
+                
+                // Iterates through list
+                while (iterator.hasNext())
+                {
+                    Pic p = (Pic) iterator.next();
         %>
-        <a href="/Instagrim/Image/<%=p.getSUUID()%>" ><img src="/Instagrim/Thumb/<%=p.getSUUID()%>"></a><br/><%
-
-            }
+                    <a href="/Instagrim/Image/<%=p.getSUUID()%>" ><img src="/Instagrim/Thumb/<%=p.getSUUID()%>"></a>
+        <%
+                    count++;
+                    
+                    if (count == 3)
+                    {
+                        count = 0;
+                        %>
+                        <br/>
+                        <%
+                    }
+                }  
             }
         %>
         </article>

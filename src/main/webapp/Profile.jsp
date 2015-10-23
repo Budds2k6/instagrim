@@ -1,5 +1,5 @@
 <%-- 
-    Document   : Profile (Profile)
+    Document   : Profile
     Created on : 10/10/2015
     Author     : Tristan Haley
 --%>
@@ -13,47 +13,67 @@
         <title>InstaGrim - Home</title>
         <link rel="stylesheet" type="text/css" href="Styles.css" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style>
+            article
+            {
+                margin: auto;
+                position:absolute;
+                font-family: Courier;
+                background: linear-gradient(to right, lightgrey, grey, lightgrey); 
+                width: 20%;
+                left:40%;
+                top: 40%;
+                padding:10px;
+                border-color: darkgreen;
+                border-width: 5px;
+                border-style: double;
+                border-radius: 10px;
+                color: black;
+                text-align: left;
+            }
+        </style>
     </head>
     <body>
         <header>
             <h1> InstaGrim </h1>
-            <h2>Welcome</h2>
-        </header>
-        <nav>        
-            <ul>               
-                    <%  
-                // Checks if logged in
-                LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
-
-                // If they are logged in
-                if (lg != null)
-                {
-                    // Obtain username data
-                    String UserName = lg.getUsername();
-
-                    if (lg.getLoggedIn())
-                    {
-                        %>
-                        <p style="color: black"> Welcome <%= UserName %>! </p>
-                        <li><a href="upload.jsp">Upload</a></li>
-                        <li><a href="/Instagrim/Images/<%=lg.getUsername()%>">Your Images</a></li>
-
-                        <form action="Logout" method="POST">
-                            <input type="Image" src="lkju.png">
-                        </form>
-
-                        <%
-                    }
-                }else
-                {
-                    %>
-                         <li><a href="register.jsp">Register</a></li>
-                        <li><a href="login.jsp">Login</a></li>
-                    <%        
-                }%>
-            </ul>
+        </header>             
+            <%  
+            // Gets user session
+            LoggedIn user = (LoggedIn) session.getAttribute("LoggedIn");
             
-        </nav>
+            // Obtain user details
+            String username = user.getUsername();
+            String firstname = user.getFirstname();
+            String surname = user.getSurname();
+            String email = user.getEmail();
+
+            %>
+            <h2>Welcome <%= username %>!</h2>
+            <nav>                
+                <ul>
+                    <li><a href="upload.jsp">Upload</a></li>
+                    <li><a href="/Instagrim/Images/<%=username%>">Your Images</a></li>
+
+                    <form action="Logout" method="POST">
+                        <input type="Image" src="lkju.png">
+                    </form>
+                </ul>
+            </nav>
+                    
+        <article>
+            <h3>Your details:</h3>
+            <form method="POST"  action="Register">
+                
+                    <li>Username  <input type="text" name="username" maxlength="16" value="<%=username%>"></li>
+                    <li>Firstname <input type ="firstname" name="firstname" value="<%=firstname%>"></li>
+                    <li>Surname   <input type="surname" name="surname" value="<%=surname%>"></li>
+                    <li>Email     <input type="email" name ="email" value="<%=email%>"></li>
+                
+                <br/>
+                <%-- <input type="submit" value="Commit">  --%>
+            </form>
+        </article>
+
         <footer>
             <ul>
                 <li>&COPY; T Haley</li>
