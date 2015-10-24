@@ -54,16 +54,16 @@
                 {
                     Pic p = (Pic) iterator.next();
         %>
-                    <a href="/Instagrim/Image/<%=p.getSUUID()%>" ><img src="/Instagrim/Thumb/<%=p.getSUUID()%>"></a>
+                    <a style="display: inline-block; margin-left: 25%;" href="/Instagrim/Image/<%=p.getSUUID()%>" ><img src="/Instagrim/Thumb/<%=p.getSUUID()%>"></a>
         <%
                     count++;
                     
                     if (count == 3)
                     {
                         count = 0;
-                        %>
+        %>
                         <br/>
-                        <%
+        <%
                     }
                 }  
             }

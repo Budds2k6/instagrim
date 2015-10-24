@@ -34,7 +34,7 @@
     <body>
         <header>
         <h1>InstaGrim ! </h1>
-        <h2>Your world in Black and White</h2>
+        <h2>Registration</h2>
         </header>
         <nav>
             <ul>
@@ -45,7 +45,7 @@
         </nav>
        
         <article>
-            <h3>InstaGrim Registration</h3>
+            <h3>Enter your details</h3>
             <form method="POST"  action="Register">
                 
                     <li>Username (8-16 chars)  <input type="text" name="username" maxlength="16"></li>

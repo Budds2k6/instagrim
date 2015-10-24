@@ -22,13 +22,13 @@ import com.datastax.driver.core.utils.Bytes;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.Date;
+import java.util.UUID;
 import java.util.LinkedList;
 import javax.imageio.ImageIO;
 import static org.imgscalr.Scalr.*;
@@ -42,6 +42,7 @@ import uk.ac.dundee.computing.aec.instagrim.stores.Pic;
 public class PicModel
 {
     Cluster cluster;
+    
 
     public void PicModel()
     {
@@ -52,6 +53,37 @@ public class PicModel
     public void setCluster(Cluster cluster)
     {
         this.cluster = cluster;
+    }
+    
+    // Obtains, and returns the profile picture for the user
+    public UUID getProfilePic(String username)
+    {
+        // Sets up session access
+        Session thisSession = cluster.connect("instagrim");
+        PreparedStatement thisRequest = thisSession.prepare("SELECT profile_pic from userprofiles WHERE login = ?");
+        ResultSet result = null;
+        BoundStatement boundStatement = new BoundStatement(thisRequest);
+        
+        // Obtains the search results
+        result = thisSession.execute(boundStatement.bind(username));
+        
+        // If end of search
+        if (result.isExhausted())
+        {
+            System.out.println("No profile picture found!");
+            return null;
+        }
+        else // If picture found
+        {
+            // Iterates through found rows (only one)
+            for (Row picRow : result)
+            {
+                // Return UUID of picture
+                UUID picID = picRow.getUUID("profile_pic");
+                return picID;
+            }
+        }    
+        return null;
     }
 
     // *** I've no idea what's going on here ***
@@ -142,30 +174,34 @@ public class PicModel
         return null;
     }
 
+    // Creates a thumbnail of the image
     public static BufferedImage createThumbnail(BufferedImage img)
     {
-        img = resize(img, Method.SPEED, 250, OP_ANTIALIAS);
-        // Let's add a little border before we return result.
+        img = resize(img, Method.SPEED, 250, OP_ANTIALIAS, OP_GRAYSCALE);
+         //Let's add a little border before we return result.
         return pad(img, 2);
     }
     
-   public static BufferedImage createProcessed(BufferedImage img)
-   {
-        int Width=img.getWidth()-1;
-        //img = resize(img, Method.SPEED, Width, OP_ANTIALIAS, OP_GRAYSCALE);
+    // 
+    public static BufferedImage createProcessed(BufferedImage img)
+    {
+        int width = img.getWidth()-1;
+        img = resize(img, Method.SPEED, width, OP_ANTIALIAS, OP_GRAYSCALE);
         return pad(img, 4);
     }
    
-    public java.util.LinkedList<Pic> getPicsForUser(String User)
+    // Returns a list of pictures for the user
+    public java.util.LinkedList<Pic> getPicsForUser(String user)
     {
         java.util.LinkedList<Pic> Pics = new java.util.LinkedList<>();
         Session session = cluster.connect("instagrim");
-        PreparedStatement ps = session.prepare("select picid from userpiclist where user =?");
+        PreparedStatement ps = session.prepare("select picid from userpiclist where user = ?");
         ResultSet rs = null;
         BoundStatement boundStatement = new BoundStatement(ps);
         rs = session.execute( // this is where the query is executed
                 boundStatement.bind( // here you are binding the 'boundStatement'
-                        User));
+                        user));
+        
         if (rs.isExhausted())
         {
             System.out.println("No Images returned");
@@ -258,7 +294,6 @@ public class PicModel
         p.setPic(bImage, length, type);
 
         return p;
-
     }
 
 }

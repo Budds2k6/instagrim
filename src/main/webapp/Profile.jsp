@@ -36,17 +36,16 @@
     <body>
         <header>
             <h1> InstaGrim </h1>
-        </header>             
-            <%  
-            // Gets user session
-            LoggedIn user = (LoggedIn) session.getAttribute("LoggedIn");
-            
+        </header>
+            <%             
             // Obtain user details
-            String username = user.getUsername();
-            String firstname = user.getFirstname();
-            String surname = user.getSurname();
-            String email = user.getEmail();
+            String username = request.getAttribute("username").toString();
+            String firstname = request.getAttribute("firstname").toString();
+            String surname = request.getAttribute("surname").toString();
+            String email = request.getAttribute("email").toString();
 
+            System.out.println("LEMONS Firstname: " + firstname + " Surname: " + surname + " Email: " + email);
+            
             %>
             <h2>Welcome <%= username %>!</h2>
             <nav>                

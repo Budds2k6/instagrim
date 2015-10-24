@@ -51,9 +51,6 @@ public class Login extends HttpServlet
         // Obtains username + password from Cassandra
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        String firstname = request.getParameter("firstname");
-        String surname = request.getParameter("surname");
-        String email = request.getParameter("email");
         
         // Creates a new user, and requests session information
         User us = new User();
@@ -70,17 +67,15 @@ public class Login extends HttpServlet
             LoggedIn lg = new LoggedIn();
             lg.setLoginState(true);
             lg.setUsername(username);
-            lg.setFirstname(firstname);
-            lg.setSurname(surname);
-            lg.setEmail(email);
             //request.setAttribute("LoggedIn", lg);
             
             // Saves login instance to session
             session.setAttribute("LoggedIn", lg);
-            System.out.println("Session in servlet " + session);
-            
+            // request.setAttribute("LoggedIn", lg);
+            System.out.println("Session in servlet " + session); 
+           
             // Directs to profile page
-            RequestDispatcher rd = request.getRequestDispatcher("Profile.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/Profile");
 	    rd.forward(request, response);
         }
         else
