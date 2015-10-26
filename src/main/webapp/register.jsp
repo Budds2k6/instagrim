@@ -38,12 +38,9 @@
         </header>
         <nav>
             <ul>
-                
-                <%-- <li><a href="/Instagrim/Images/majed">Sample Images</a></li> --%>
                 <li><a href="/Instagrim/"> Home </a></li>
             </ul>
-        </nav>
-       
+        </nav>       
         <article>
             <h3>Enter your details</h3>
             <form method="POST"  action="Register">

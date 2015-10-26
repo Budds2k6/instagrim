@@ -60,16 +60,18 @@ public class Profile extends HttpServlet
         // Extracts the user information
         String firstname = userInfo.getFirstname();
         String surname = userInfo.getSurname();
-        String email = userInfo.getEmail().toString();
+        Set<String> sEmail = userInfo.getEmail();
+        String[] aEmail = new String[3];
+        sEmail.toArray(aEmail);
+        String email = aEmail[0];
         UUID profilePic = userInfo.getProfilePic();
-        
-        System.out.println("WHOLOLO Firstname: " + firstname + " Surname: " + surname + " Email: " + email + " FuckYou: " + profilePic);
-        
+               
         // Sets the session attributes
         request.setAttribute("firstname", firstname);
         request.setAttribute("surname", surname);
         request.setAttribute("email", email);
         request.setAttribute("profilePic", profilePic);
+        request.setAttribute("username", username);
         
         // Acquires the picture list for the user
         PicModel picture = new PicModel();
@@ -84,6 +86,13 @@ public class Profile extends HttpServlet
     
     // Does post
      protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException
+    {
+        // Relays
+        processRequest(request, response);
+    }
+     
+     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
         // Relays

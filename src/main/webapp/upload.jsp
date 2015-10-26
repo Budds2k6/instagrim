@@ -45,30 +45,29 @@
     </head>
     <body>
         <h1 style="padding: 0px;">InstaGrim! </h1>
-        <h2 style=";">Upload an image</h2>
+        <h2 style="">Upload an image</h2>
         <nav>
             <ul>
-                <li><a href="/Instagrim/"> Home </a></li>
-                <%-- <li><a href="/Instagrim/Images/majed">Sample Images</a></li> --%>
+                <li><a href="/Instagrim/Profile"> Profile </a></li>
             </ul>
         </nav>
  
         <article>
             <h3>File Upload</h3>
             <form method="POST" enctype="multipart/form-data" action="Image">
-                
-            <div>
-                <h3 style="background-color: aquamarine; text-align: center;"> Filter </h3>
-                <input type="radio" value="None" name="Filter" checked="true">None<br>
-                <input type="radio" value="Greyscale" name="Filter">Greyscale<br>
-            </div>
-
-                
-                File to upload: <input type="file" name="upfile" value="bacon">
+                File to upload: <input type="file" name="upfile">
                 <br/>
                 <br/>
-
                 <input type="submit" value="Press"> to upload the file!
+                <input type="hidden" value="false" name="isProfilePic">
+                
+                <div>
+                    <h3 style="background-color: aquamarine; text-align: center;"> Filter </h3>
+                    <input type="radio" value="None"      name="Filter" checked="true">None<br>
+                    <input type="radio" value="Greyscale" name="Filter">Greyscale<br>
+                    <input type="radio" value="Brighter" name="Filter">Brighter<br>
+                    <input type="radio" value="Darker" name="Filter">Darker<br>
+                </div>
             </form>
 
         </article>

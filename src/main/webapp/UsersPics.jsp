@@ -23,9 +23,12 @@
         
         <nav>
             <ul>
-                <li class="nav"><a href="/Instagrim/upload.jsp">Upload</a></li>
                 <li><a href="/Instagrim/"> Home </a></li>
-                <li><a href="/Instagrim/Profile.jsp"> Profile </a></li>
+                <form method="POST" action="/Instagrim/UploadImage" id="uploadForm" name="uploadForm">
+                    <input type="hidden" value="<%=username%>" name="username">
+                    <li> <a href="#" onclick="document.getElementById('uploadForm').submit()">Upload</a></li>
+                </form>
+                <li><a href="/Instagrim/Profile"> Profile </a></li>
             </ul>
         </nav>
  

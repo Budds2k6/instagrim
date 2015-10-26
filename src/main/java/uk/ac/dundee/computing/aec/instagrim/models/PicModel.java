@@ -42,7 +42,7 @@ import uk.ac.dundee.computing.aec.instagrim.stores.Pic;
 public class PicModel
 {
     Cluster cluster;
-    
+    static String filter = "";   
 
     public void PicModel()
     {
@@ -85,9 +85,15 @@ public class PicModel
         }    
         return null;
     }
+    
+    // Sets the greyscale of the image
+    public void setFilter(String filter)
+    {
+        this.filter = filter;
+    }
 
     // *** I've no idea what's going on here ***
-    public void insertPic(byte[] b, String type, String name, String user)
+    public void insertPic(byte[] b, String type, String name, String user, boolean isProfilePic)
     {
         try
         {
@@ -113,16 +119,26 @@ public class PicModel
             Session session = cluster.connect("instagrim");
 
             // Adds picture to the database (setup)
-            PreparedStatement psInsertPic = session.prepare("insert into pics ( picid, image, thumb, processed, user, interaction_time, imagelength, thumblength, processedlength, type, name) values(?,?,?,?,?,?,?,?,?,?,?)");
-            PreparedStatement psInsertPicToUser = session.prepare("insert into userpiclist ( picid, user, pic_added) values(?,?,?)");
+            PreparedStatement psInsertPic = session.prepare("INSERT INTO pics ( picid, image, thumb, processed, user, interaction_time, imagelength, thumblength, processedlength, type, name) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
             BoundStatement bsInsertPic = new BoundStatement(psInsertPic);
-            BoundStatement bsInsertPicToUser = new BoundStatement(psInsertPicToUser);
-
+            
             Date DateAdded = new Date();
+            
+            if (isProfilePic)
+            {
+                PreparedStatement psInsertPicToProfile = session.prepare("UPDATE userprofiles SET profile_pic = ? WHERE login = ?");
+                BoundStatement bsPicToProfile = new BoundStatement(psInsertPicToProfile);
+                session.execute(bsPicToProfile.bind(picID, user));
+            }
+            else
+            {            
+                PreparedStatement psInsertPicToUser = session.prepare("INSERT INTO userpiclist ( picid, user, pic_added) VALUES(?,?,?)");
+                BoundStatement bsInsertPicToUser = new BoundStatement(psInsertPicToUser);
+                session.execute(bsInsertPicToUser.bind(picID, user, DateAdded));
+            }  
             
             // Adds picture to the database (execution)
             session.execute(bsInsertPic.bind(picID, buffer, thumbBuff,processedBuff, user, DateAdded, length,thumbLength,processedLength, type, name));
-            session.execute(bsInsertPicToUser.bind(picID, user, DateAdded));
             session.close();
 
         }
@@ -177,16 +193,50 @@ public class PicModel
     // Creates a thumbnail of the image
     public static BufferedImage createThumbnail(BufferedImage img)
     {
-        img = resize(img, Method.SPEED, 250, OP_ANTIALIAS, OP_GRAYSCALE);
+        // If Greyscale set
+        if (filter.equals("Greyscale"))
+        {
+            img = resize(img, Method.SPEED, 250, OP_ANTIALIAS, OP_GRAYSCALE);
+        }
+        else if (filter.equals("Brighter"))
+        {
+            img = resize(img, Method.SPEED, 250, OP_ANTIALIAS, OP_BRIGHTER);
+        }
+        else if (filter.equals("Darker"))
+        {
+            img = resize(img, Method.SPEED, 250, OP_ANTIALIAS,  OP_DARKER);
+        }
+        else
+        {
+            img = resize(img, Method.SPEED, 250, OP_ANTIALIAS);
+        }
          //Let's add a little border before we return result.
         return pad(img, 2);
     }
     
-    // 
+    // Creates the full sized image
     public static BufferedImage createProcessed(BufferedImage img)
     {
         int width = img.getWidth()-1;
-        img = resize(img, Method.SPEED, width, OP_ANTIALIAS, OP_GRAYSCALE);
+        
+        // If Greyscale set
+        if (filter.equals("Greyscale"))
+        {
+            img = resize(img, Method.SPEED, width, OP_ANTIALIAS, OP_GRAYSCALE);
+        }
+        else if (filter.equals("Brighter"))
+        {
+            img = resize(img, Method.SPEED, width, OP_ANTIALIAS, OP_BRIGHTER);
+        }
+        else if (filter.equals("Darker"))
+        {
+            img = resize(img, Method.SPEED, width, OP_ANTIALIAS,  OP_DARKER);
+        }
+        else
+        {
+            img = resize(img, Method.SPEED, width, OP_ANTIALIAS);
+        }
+        
         return pad(img, 4);
     }
    
@@ -195,7 +245,7 @@ public class PicModel
     {
         java.util.LinkedList<Pic> Pics = new java.util.LinkedList<>();
         Session session = cluster.connect("instagrim");
-        PreparedStatement ps = session.prepare("select picid from userpiclist where user = ?");
+        PreparedStatement ps = session.prepare("SELECT picid FROM userpiclist WHERE user = ?");
         ResultSet rs = null;
         BoundStatement boundStatement = new BoundStatement(ps);
         rs = session.execute( // this is where the query is executed
@@ -236,22 +286,24 @@ public class PicModel
          
             if (image_type == Convertors.DISPLAY_IMAGE)
             {
-                ps = session.prepare("select image,imagelength,type from pics where picid =?");
+                ps = session.prepare("SELECT image, imagelength, type FROM pics WHERE picid = ?");
             }
             else if (image_type == Convertors.DISPLAY_THUMB)
             {
-                ps = session.prepare("select thumb,imagelength,thumblength,type from pics where picid =?");
+                ps = session.prepare("SELECT thumb, imagelength, thumblength, type FROM pics WHERE picid = ?");
             }
             else if (image_type == Convertors.DISPLAY_PROCESSED)
             {
-                ps = session.prepare("select processed,processedlength,type from pics where picid =?");
+                ps = session.prepare("SELECT processed, processedlength, type FROM pics WHERE picid = ?");
             }
             
+            // Estasblishes the SQL statement
             BoundStatement boundStatement = new BoundStatement(ps);
             rs = session.execute( // this is where the query is executed
                     boundStatement.bind( // here you are binding the 'boundStatement'
                             picid));
 
+            // Iterates through result list
             if (rs.isExhausted())
             {
                 System.out.println("No Images returned");

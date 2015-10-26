@@ -136,6 +136,7 @@ public class Image extends HttpServlet
         out.close();
     }
 
+    // Carry out post for servlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         for (Part part : request.getParts())
@@ -148,11 +149,11 @@ public class Image extends HttpServlet
             InputStream is = request.getPart(part.getName()).getInputStream();
             int i = is.available();
             HttpSession session=request.getSession();
-            LoggedIn lg= (LoggedIn)session.getAttribute("LoggedIn");
-            String username="majed";
+            LoggedIn lg = (LoggedIn)session.getAttribute("LoggedIn");
+            String username = "majed";
             
             if (lg.getLoggedIn()){
-                username=lg.getUsername();
+                username = lg.getUsername();
             }
             
             if (i > 0) 
@@ -162,19 +163,49 @@ public class Image extends HttpServlet
                 System.out.println("Length : " + b.length);
                 PicModel tm = new PicModel();
                 tm.setCluster(cluster);
-                tm.insertPic(b, type, filename, username);
+                
+                // Acquires the greyscale 
+                String sFilter = request.getParameter("Filter");
+                boolean bProfilePic = Boolean.valueOf(request.getParameter("isProfilePic"));
+                System.out.println(sFilter);
+               
+                if (!bProfilePic)
+                {
+                    // If greyscale is chosen
+                    if (sFilter.equals("Greyscale"))
+                    {
+                        tm.setFilter("Greyscale");
+                    }
+                    else if (sFilter.equals("Brighter"))
+                    {
+                        tm.setFilter("Brighter");
+                    }
+                    else if (sFilter.equals("Darker"))
+                    {
+                        tm.setFilter("Darker");
+                    }
+                    else
+                    {
+                        tm.setFilter("None");
+                    }
+                }
+                
+                // Directs model to insert picture
+                tm.insertPic(b, type, filename, username, bProfilePic);
 
+                // Close connection
                 is.close();
             }
+            
+            // Redirect
             RequestDispatcher rd = request.getRequestDispatcher("/upload.jsp");
-             rd.forward(request, response);
+            rd.forward(request, response);
         }
 
     }
 
     private void error(String mess, HttpServletResponse response) throws ServletException, IOException
     {
-
         PrintWriter out = null;
         out = new PrintWriter(response.getOutputStream());
         out.println("<h1>You have an na error in your input</h1>");
